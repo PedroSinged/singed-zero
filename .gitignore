@@ -1,0 +1,5 @@
+firmware-esp32/
+__pycache__/
+*.pyc
+.venv/
+*.bin
