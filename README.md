@@ -21,7 +21,8 @@ O Singed Zero é um dispositivo de segurança ofensiva portátil inspirado no Fl
 ## Funcionalidades
 
 - [x] Menu navegável com state machine
-- [ ] Wi-Fi — Scanner, Beacon Spam, Deauth
+- [x] Wi-Fi — Scanner
+- [ ] Wi-Fi — Beacon Spam, Deauth
 - [ ] Bluetooth — BLE Scanner
 - [ ] Sub-GHz — CC1101 (planejado)
 
@@ -52,6 +53,13 @@ singed-zero/
 - Display OLED inicializado via I2C
 - Menu principal navegável com 3 botões
 - State machine implementada para navegação entre submenus
+
+### v0.2 — Wi-Fi Scanner
+- Scanner de redes 2.4GHz e 5GHz
+- Listagem com SSID e RSSI ordenados por sinal
+- Tela de detalhes por rede (canal, BSSID, segurança, faixa)
+- Paginação automática na lista de redes
+- Loading animado durante o scan
 
 ## Autor
 
