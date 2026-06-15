@@ -2,6 +2,7 @@ import machine
 import ssd1306
 import time
 from wifi.scanner import executar_scan
+from wifi.beacon import executar_beacon
 
 # Hardware
 i2c = machine.I2C(0, scl=machine.Pin(22), sda=machine.Pin(21))
@@ -19,17 +20,19 @@ menu_pos = 0
 redes_24 = []
 redes_5g = []
 redes_pos = 0
-origem_scan = "scan_24"  # guarda de qual scan viemos
+origem_scan = "scan_24"
 
 # Menus
 menus = {
     "menu_principal": ["Wi-Fi", "Bluetooth", "Sub-GHz", "Configs"],
     "menu_wifi":      ["Scanner 2.4G", "Scanner 5G+", "Beacon Spam", "Deauth", "Voltar"],
+    "menu_beacon":    ["Singed Mode", "Hacker Mode", "Random Mode", "Voltar"],
 }
 
 navegacao = {
     "menu_principal": ["menu_wifi", None, None, None],
-    "menu_wifi":      ["scan_24", "scan_5g", None, None, "menu_principal"],
+    "menu_wifi":      ["scan_24", "scan_5g", "menu_beacon", None, "menu_principal"],
+    "menu_beacon":    ["beacon_singed", "beacon_hacker", "beacon_random", "menu_wifi"],
 }
 
 def desenhar_menu(itens, pos):
@@ -110,6 +113,14 @@ while True:
                 redes_pos = 0
                 redes = redes_24 if proximo == "scan_24" else redes_5g
                 desenhar_lista_redes(redes, redes_pos)
+            elif proximo in ("beacon_singed", "beacon_hacker", "beacon_random"):
+                estado_atual = proximo
+                modo = proximo.replace("beacon_", "")
+                executar_beacon(oled, modo, btn_select)
+                # Ao sair do beacon, volta ao menu_beacon
+                estado_atual = "menu_beacon"
+                menu_pos = 0
+                desenhar_menu(menus["menu_beacon"], menu_pos)
             elif proximo:
                 estado_atual = proximo
                 menu_pos = 0
@@ -134,11 +145,9 @@ while True:
 
         if btn_select.value() == 0:
             if redes:
-                # Tem redes: abre detalhes
                 estado_atual = "detalhes_rede"
                 desenhar_detalhes(redes[redes_pos])
             else:
-                # Sem redes: volta ao menu_wifi
                 estado_atual = "menu_wifi"
                 menu_pos = 0
                 desenhar_menu(menus["menu_wifi"], menu_pos)
@@ -147,7 +156,6 @@ while True:
     # Tela de detalhes
     elif estado_atual == "detalhes_rede":
         if btn_select.value() == 0 or btn_cima.value() == 0 or btn_baixo.value() == 0:
-            # Volta para o scan de origem
             estado_atual = origem_scan
             redes = redes_24 if origem_scan == "scan_24" else redes_5g
             desenhar_lista_redes(redes, redes_pos)
