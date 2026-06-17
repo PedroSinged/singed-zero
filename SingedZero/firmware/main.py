@@ -4,6 +4,8 @@ import time
 from wifi.scanner import executar_scan
 from wifi.beacon import executar_beacon
 from bluetooth.ble_scanner import executar_ble_scan
+from bluetooth.ble_spam import executar_ble_spam
+from bluetooth.ble_spam_android import executar_ble_spam_android
 
 # Hardware
 i2c = machine.I2C(0, scl=machine.Pin(22), sda=machine.Pin(21))
@@ -32,14 +34,14 @@ menus = {
     "menu_principal": ["Wi-Fi", "Bluetooth", "Sub-GHz", "Configs"],
     "menu_wifi":      ["Scanner 2.4G", "Scanner 5G+", "Beacon Spam", "Deauth", "Voltar"],
     "menu_beacon":    ["Singed Mode", "Hacker Mode", "Random Mode", "Voltar"],
-    "menu_bluetooth": ["BLE Scanner", "Voltar"],
+    "menu_bluetooth": ["BLE Scanner", "Apple Spam", "Android Spam", "Voltar"],
 }
 
 navegacao = {
     "menu_principal": ["menu_wifi", "menu_bluetooth", None, None],
     "menu_wifi":      ["scan_24", "scan_5g", "menu_beacon", None, "menu_principal"],
     "menu_beacon":    ["beacon_singed", "beacon_hacker", "beacon_random", "menu_wifi"],
-    "menu_bluetooth": ["ble_scan", "menu_principal"],
+    "menu_bluetooth": ["ble_scan", "ble_spam", "ble_spam_android", "menu_principal"],
 }
 
 def desenhar_menu(itens, pos):
@@ -132,6 +134,7 @@ def desenhar_detalhes(rede):
     oled.show()
 
 # Loop principal
+time.sleep(0.5)
 desenhar_menu(menus[estado_atual], menu_pos)
 
 while True:
@@ -170,6 +173,18 @@ while True:
                 estado_atual = "lista_ble"
                 ble_pos = 0
                 desenhar_lista_ble(dispositivos_ble, ble_pos)
+            elif proximo == "ble_spam":
+                estado_atual = proximo
+                executar_ble_spam(oled, btn_select)
+                estado_atual = "menu_bluetooth"
+                menu_pos = 0
+                desenhar_menu(menus["menu_bluetooth"], menu_pos)
+            elif proximo == "ble_spam_android":
+                estado_atual = proximo
+                executar_ble_spam_android(oled, btn_select)
+                estado_atual = "menu_bluetooth"
+                menu_pos = 0
+                desenhar_menu(menus["menu_bluetooth"], menu_pos)
             elif proximo:
                 estado_atual = proximo
                 menu_pos = 0

@@ -25,7 +25,7 @@ O Singed Zero é um dispositivo de segurança ofensiva portátil inspirado no Fl
 - [x] Wi-Fi — Beacon Spam (Singed Mode, Hacker Mode, Random Mode)
 - [ ] Wi-Fi — Deauth
 - [x] Bluetooth — BLE Scanner
-- [ ] Bluetooth — BLE Spam (Apple/Android)
+- [x] Bluetooth — BLE Spam (Apple Continuity Protocol, Google Fast Pair)
 - [ ] Sub-GHz — CC1101 (planejado)
 - [ ] NFC — (planejado)
 - [ ] Infravermelho — (planejado)
@@ -77,6 +77,12 @@ singed-zero/
 - Exibe nome, MAC e RSSI de cada dispositivo
 - Paginação automática na lista
 - Tela de detalhes por dispositivo
+
+### v0.5 — BLE Spam (Apple e Android)
+- Apple Continuity Protocol spam com múltiplos tipos de popup
+- Google Fast Pair advertisement para Android
+- Contadores de pacotes enviados
+- Parada via botão select
 
 ## Autor
 
